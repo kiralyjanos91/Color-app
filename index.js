@@ -1,7 +1,16 @@
-let color = "#CD5C5C"
-document.getElementById("color-input").value = color
-const inputBtn = document.getElementById("color-input-btn")
 
+const inputBtn = document.getElementById("color-input-btn")
+const colorPicker = document.getElementById("color-picker")
+const colorLabel = document.getElementById("color-picker-label")
+let color = colorPicker.value
+colorLabel.value = colorPicker.value
+
+colorPicker.addEventListener("input", (event) => { colorLabel.value = colorPicker.value })
+colorLabel.addEventListener("input", (event) => { 
+    if(colorLabel.value.charAt(0)==="#")    
+    {colorPicker.value = colorLabel.value}
+    else { colorPicker.value = "#" + colorLabel.value }
+})
 
 function renderColors(){
     if(color.charAt(0)==="#") {color = color.substring(1)}
@@ -10,7 +19,8 @@ function renderColors(){
         .then(res => res.json())
         .then(scheme => {
             for (i=0; i < scheme.colors.length; i++){
-            document.getElementById(`div${i+1}`).style.backgroundColor=scheme.colors[i].hex.value 
+            document.getElementById(`div${i+1}`).style.backgroundColor=scheme.colors[i].hex.value
+            document.getElementById(`p${i+1}`).textContent=scheme.colors[i].hex.value 
             }
         })
     }
@@ -18,7 +28,7 @@ function renderColors(){
 renderColors()
 
 inputBtn.addEventListener( "click" , function() {    
-    color = document.getElementById("color-input").value
+    color = colorLabel.value
     renderColors()    
 })
 
